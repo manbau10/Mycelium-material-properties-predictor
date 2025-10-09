@@ -1,0 +1,536 @@
+{
+    "save_date": "2025-10-06 12:48:31",
+    "optimization_approach": "Conservative Hyperparameter Optimization",
+    "models_info": {
+        "tensile_strength": {
+            "XGBoost": {
+                "filename": "xgboost_tensile_strength.pkl",
+                "filepath": "optimized_models_pickle\\tensile_strength\\xgboost_tensile_strength.pkl",
+                "file_size_kb": 175.28,
+                "best_params": {
+                    "colsample_bytree": 0.8109665534981373,
+                    "gamma": 0.12502620561931213,
+                    "learning_rate": 0.056660392534707484,
+                    "max_depth": 7,
+                    "min_child_weight": 5,
+                    "n_estimators": 140,
+                    "reg_alpha": 0.22148365896094854,
+                    "reg_lambda": 0.036462010842536155,
+                    "subsample": 0.8710174466433351
+                },
+                "best_score": 27.238988683348687,
+                "best_trial": 92
+            },
+            "CatBoost": {
+                "filename": "catboost_tensile_strength.pkl",
+                "filepath": "optimized_models_pickle\\tensile_strength\\catboost_tensile_strength.pkl",
+                "file_size_kb": 107.25,
+                "best_params": {
+                    "bagging_temperature": 0.49408895503015365,
+                    "border_count": 96,
+                    "depth": 6,
+                    "iterations": 99,
+                    "l2_leaf_reg": 8.919672281166472,
+                    "learning_rate": 0.15043961491799213,
+                    "random_strength": 0.32436365292635266
+                },
+                "best_score": 22.422606509768574,
+                "best_trial": 22
+            },
+            "LightGBM": {
+                "filename": "lightgbm_tensile_strength.pkl",
+                "filepath": "optimized_models_pickle\\tensile_strength\\lightgbm_tensile_strength.pkl",
+                "file_size_kb": 161.92,
+                "best_params": {
+                    "colsample_bytree": 0.9218451645259317,
+                    "learning_rate": 0.0634030481148849,
+                    "max_depth": 4,
+                    "min_child_samples": 5,
+                    "n_estimators": 211,
+                    "num_leaves": 32,
+                    "reg_alpha": 0.16577254949762704,
+                    "reg_lambda": 0.28402119459061836,
+                    "subsample": 0.9602165897696476
+                },
+                "best_score": 27.653574175583678,
+                "best_trial": 99
+            },
+            "Random Forest": {
+                "filename": "random_forest_tensile_strength.pkl",
+                "filepath": "optimized_models_pickle\\tensile_strength\\random_forest_tensile_strength.pkl",
+                "file_size_kb": 229.46,
+                "best_params": {
+                    "max_depth": 4,
+                    "max_features": "sqrt",
+                    "min_samples_leaf": 4,
+                    "min_samples_split": 7,
+                    "n_estimators": 238
+                },
+                "best_score": 29.377885209360517,
+                "best_trial": 66
+            },
+            "ANN": {
+                "filename": "ann_tensile_strength.pkl",
+                "filepath": "optimized_models_pickle\\tensile_strength\\ann_tensile_strength.pkl",
+                "file_size_kb": 78.18,
+                "best_params": {
+                    "activation": "relu",
+                    "alpha": 0.00477781738111368,
+                    "learning_rate": "adaptive",
+                    "learning_rate_init": 0.1325883460885035,
+                    "max_iter": 332,
+                    "n_layers": 3,
+                    "n_units_l0": 175,
+                    "n_units_l1": 7,
+                    "n_units_l2": 15
+                },
+                "best_score": 27.130903266175256,
+                "best_trial": 45
+            }
+        },
+        "elongation_at_break": {
+            "XGBoost": {
+                "filename": "xgboost_elongation_at_break.pkl",
+                "filepath": "optimized_models_pickle\\elongation_at_break\\xgboost_elongation_at_break.pkl",
+                "file_size_kb": 105.15,
+                "best_params": {
+                    "colsample_bytree": 0.9839995073393699,
+                    "gamma": 0.37383557953189345,
+                    "learning_rate": 0.15130853148502438,
+                    "max_depth": 7,
+                    "min_child_weight": 5,
+                    "n_estimators": 82,
+                    "reg_alpha": 0.19175220499717685,
+                    "reg_lambda": 0.14019822596967269,
+                    "subsample": 0.8466402512319636
+                },
+                "best_score": 137.88273342931183,
+                "best_trial": 91
+            },
+            "CatBoost": {
+                "filename": "catboost_elongation_at_break.pkl",
+                "filepath": "optimized_models_pickle\\elongation_at_break\\catboost_elongation_at_break.pkl",
+                "file_size_kb": 69.25,
+                "best_params": {
+                    "bagging_temperature": 0.32581416817341763,
+                    "border_count": 91,
+                    "depth": 5,
+                    "iterations": 117,
+                    "l2_leaf_reg": 9.60020398847117,
+                    "learning_rate": 0.1322936834618955,
+                    "random_strength": 0.22262478677518338
+                },
+                "best_score": 159.51341204919217,
+                "best_trial": 75
+            },
+            "LightGBM": {
+                "filename": "lightgbm_elongation_at_break.pkl",
+                "filepath": "optimized_models_pickle\\elongation_at_break\\lightgbm_elongation_at_break.pkl",
+                "file_size_kb": 115.48,
+                "best_params": {
+                    "colsample_bytree": 0.9943264677673562,
+                    "learning_rate": 0.2944640720947132,
+                    "max_depth": 6,
+                    "min_child_samples": 18,
+                    "n_estimators": 296,
+                    "num_leaves": 25,
+                    "reg_alpha": 0.1203273027427517,
+                    "reg_lambda": 0.14105273515195013,
+                    "subsample": 0.896838051229633
+                },
+                "best_score": 145.7134804339018,
+                "best_trial": 96
+            },
+            "Random Forest": {
+                "filename": "random_forest_elongation_at_break.pkl",
+                "filepath": "optimized_models_pickle\\elongation_at_break\\random_forest_elongation_at_break.pkl",
+                "file_size_kb": 512.88,
+                "best_params": {
+                    "max_depth": 5,
+                    "max_features": "sqrt",
+                    "min_samples_leaf": 1,
+                    "min_samples_split": 3,
+                    "n_estimators": 282
+                },
+                "best_score": 158.1221914185703,
+                "best_trial": 61
+            },
+            "ANN": {
+                "filename": "ann_elongation_at_break.pkl",
+                "filepath": "optimized_models_pickle\\elongation_at_break\\ann_elongation_at_break.pkl",
+                "file_size_kb": 112.29,
+                "best_params": {
+                    "activation": "relu",
+                    "alpha": 0.00055093681128417,
+                    "learning_rate": "constant",
+                    "learning_rate_init": 0.010013948407890896,
+                    "max_iter": 531,
+                    "n_layers": 2,
+                    "n_units_l0": 181,
+                    "n_units_l1": 15
+                },
+                "best_score": 150.81461081456342,
+                "best_trial": 89
+            }
+        },
+        "young_modulus": {
+            "XGBoost": {
+                "filename": "xgboost_young_modulus.pkl",
+                "filepath": "optimized_models_pickle\\young_modulus\\xgboost_young_modulus.pkl",
+                "file_size_kb": 235.19,
+                "best_params": {
+                    "colsample_bytree": 0.9257950880753109,
+                    "gamma": 0.19218323256405845,
+                    "learning_rate": 0.12087466226107363,
+                    "max_depth": 7,
+                    "min_child_weight": 2,
+                    "n_estimators": 142,
+                    "reg_alpha": 0.27282950062339245,
+                    "reg_lambda": 0.13650724816621349,
+                    "subsample": 0.8644308805726763
+                },
+                "best_score": 61036.088124975024,
+                "best_trial": 96
+            },
+            "CatBoost": {
+                "filename": "catboost_young_modulus.pkl",
+                "filepath": "optimized_models_pickle\\young_modulus\\catboost_young_modulus.pkl",
+                "file_size_kb": 78.21,
+                "best_params": {
+                    "bagging_temperature": 0.21043169715109297,
+                    "border_count": 78,
+                    "depth": 4,
+                    "iterations": 248,
+                    "l2_leaf_reg": 1.849916544762618,
+                    "learning_rate": 0.3592896282687521,
+                    "random_strength": 0.14529822721862043
+                },
+                "best_score": 77355.32595777657,
+                "best_trial": 27
+            },
+            "LightGBM": {
+                "filename": "lightgbm_young_modulus.pkl",
+                "filepath": "optimized_models_pickle\\young_modulus\\lightgbm_young_modulus.pkl",
+                "file_size_kb": 208.67,
+                "best_params": {
+                    "colsample_bytree": 0.9728325064865231,
+                    "learning_rate": 0.21949539328571208,
+                    "max_depth": 8,
+                    "min_child_samples": 5,
+                    "n_estimators": 214,
+                    "num_leaves": 52,
+                    "reg_alpha": 0.22373472072243605,
+                    "reg_lambda": 0.037459428954365805,
+                    "subsample": 0.9188207334201696
+                },
+                "best_score": 82175.2360853315,
+                "best_trial": 98
+            },
+            "Random Forest": {
+                "filename": "random_forest_young_modulus.pkl",
+                "filepath": "optimized_models_pickle\\young_modulus\\random_forest_young_modulus.pkl",
+                "file_size_kb": 1134.71,
+                "best_params": {
+                    "max_depth": 10,
+                    "max_features": "sqrt",
+                    "min_samples_leaf": 1,
+                    "min_samples_split": 2,
+                    "n_estimators": 258
+                },
+                "best_score": 101645.9884344689,
+                "best_trial": 53
+            },
+            "ANN": {
+                "filename": "ann_young_modulus.pkl",
+                "filepath": "optimized_models_pickle\\young_modulus\\ann_young_modulus.pkl",
+                "file_size_kb": 278.93,
+                "best_params": {
+                    "activation": "relu",
+                    "alpha": 0.007090870964679691,
+                    "learning_rate": "constant",
+                    "learning_rate_init": 0.17260160593020094,
+                    "max_iter": 756,
+                    "n_layers": 2,
+                    "n_units_l0": 270,
+                    "n_units_l1": 33
+                },
+                "best_score": 106770.23913071692,
+                "best_trial": 19
+            }
+        }
+    },
+    "target_columns": [
+        "tensile_strength",
+        "elongation_at_break",
+        "young_modulus"
+    ],
+    "categorical_columns": [
+        "fungi_type",
+        "substrate",
+        "inoculation_state",
+        "incubation_condition",
+        "growth_condition",
+        "reinforcement",
+        "crosslinking",
+        "plasticizing"
+    ],
+    "feature_columns": [
+        "fungi_type",
+        "substrate",
+        "inoculation_state",
+        "incubation_temperature",
+        "incubation_condition",
+        "growth_condition",
+        "reinforcement",
+        "crosslinking",
+        "plasticizing"
+    ],
+    "scalers_info": {
+        "tensile_strength": {
+            "filename": "scaler_tensile_strength.pkl",
+            "filepath": "optimized_models_pickle\\scalers\\scaler_tensile_strength.pkl",
+            "file_size_kb": 0.89,
+            "feature_mean": [
+                24.579710144927535,
+                6.27536231884058,
+                1.3768115942028984,
+                28.52173913043478,
+                0.37681159420289856,
+                0.0,
+                1.3043478260869565,
+                9.782608695652174,
+                14.942028985507246
+            ],
+            "feature_scale": [
+                10.301830141475355,
+                2.972746048962745,
+                0.934080176482436,
+                2.2237759743555516,
+                1.1046863188498266,
+                1.0,
+                0.9676558830506432,
+                2.6532428351986708,
+                5.495410622710856
+            ]
+        },
+        "elongation_at_break": {
+            "filename": "scaler_elongation_at_break.pkl",
+            "filepath": "optimized_models_pickle\\scalers\\scaler_elongation_at_break.pkl",
+            "file_size_kb": 0.89,
+            "feature_mean": [
+                24.579710144927535,
+                6.27536231884058,
+                1.3768115942028984,
+                28.52173913043478,
+                0.37681159420289856,
+                0.0,
+                1.3043478260869565,
+                9.782608695652174,
+                14.942028985507246
+            ],
+            "feature_scale": [
+                10.301830141475355,
+                2.972746048962745,
+                0.934080176482436,
+                2.2237759743555516,
+                1.1046863188498266,
+                1.0,
+                0.9676558830506432,
+                2.6532428351986708,
+                5.495410622710856
+            ]
+        },
+        "young_modulus": {
+            "filename": "scaler_young_modulus.pkl",
+            "filepath": "optimized_models_pickle\\scalers\\scaler_young_modulus.pkl",
+            "file_size_kb": 0.89,
+            "feature_mean": [
+                22.25,
+                5.166666666666667,
+                1.55,
+                28.45,
+                0.55,
+                0.0,
+                0.55,
+                3.533333333333333,
+                14.1
+            ],
+            "feature_scale": [
+                9.195333961671357,
+                2.602349365904244,
+                1.0712142642814277,
+                2.512800562453508,
+                1.3714347718113804,
+                1.0,
+                1.2031209415515964,
+                1.1469767022723505,
+                5.3282267219028885
+            ]
+        }
+    },
+    "encoders_info": {
+        "fungi_type": {
+            "filename": "encoder_fungi_type.pkl",
+            "filepath": "optimized_models_pickle\\encoders\\encoder_fungi_type.pkl",
+            "file_size_kb": 1.42,
+            "classes": [
+                " Fomitella fraxinea (ASTI 17001",
+                " Fomitella fraxinea (ASTI 17002",
+                " Fomitella fraxinea (ASTI 17003",
+                " Fomitella fraxinea (ASTI 17004",
+                " Fomitella fraxinea (ASTI 17005",
+                " Fomitella fraxinea (ASTI 17006",
+                " Fomitella fraxinea (ASTI 17007",
+                " Fomitella fraxinea (ASTI 17008",
+                " Fomitella fraxinea (ASTI 17009",
+                " Fomitella fraxinea (ASTI 17010",
+                " Fomitella fraxinea (ASTI 17011",
+                " Fomitella fraxinea (ASTI 17012",
+                " Fomitella fraxinea (ASTI 17013",
+                " Fomitella fraxinea (ASTI 17014",
+                " Fomitella fraxinea (ASTI 17015",
+                " Fomitella fraxinea (ASTI 17016",
+                " Fomitella fraxinea (ASTI 17017",
+                " Fomitella fraxinea (ASTI 17018",
+                " Schizophyllum commune",
+                "Abortiporus biennis (Bull.) Singer 064\u201318 ",
+                "Fomes fomentarius DSM 4986",
+                "Fomitopsis iberica (104-19)",
+                "Fomitopsis pinicola DSM 4985",
+                "Ganoderma Lucidum",
+                "Ganoderma lucidum",
+                "Ganoderma lucidum DSM9621",
+                "Hydrophobine gene Schizophyllum commune",
+                "Mycelium run wood",
+                "Phellinus ellipsoideus",
+                "Pleaurotus eryngii DSM 1977",
+                "Pleurotus ostreatus ",
+                "Pleurotus ostreatus DSM11191 ",
+                "Rhizopus delemar CBS 145,940",
+                "S. commune strain 4-39 (MATA41MATB41, CBS 341.81)",
+                "Schizophyllum commune",
+                "Stereum hirsutum (073-19)",
+                "Trametes Versicolor DSM 1977",
+                "Trametes orientalis  (JF82 01) "
+            ]
+        },
+        "substrate": {
+            "filename": "encoder_substrate.pkl",
+            "filepath": "optimized_models_pickle\\encoders\\encoder_substrate.pkl",
+            "file_size_kb": 0.58,
+            "classes": [
+                "Agar minimal medium ",
+                "Bread waste",
+                "Broth, glucose (99.5%), agar, citric acid (99.5%), and Urea broth",
+                "Microcrystalline Cellulose ",
+                "Microcrystalline Cellulose plus PDB",
+                "Modified yeast malt broth medium supplemented with ammonium nitrate ",
+                "PDB",
+                "Potatoe Dextrox Broth (PDB)",
+                "Rice bran and sawdust ",
+                "S. commune minimal medium",
+                "Water ",
+                "nan"
+            ]
+        },
+        "inoculation_state": {
+            "filename": "encoder_inoculation_state.pkl",
+            "filepath": "optimized_models_pickle\\encoders\\encoder_inoculation_state.pkl",
+            "file_size_kb": 0.36,
+            "classes": [
+                " fungal biomass",
+                "Liquid Media Surface ",
+                "Solid Solid Media Surface",
+                "Submerged cultivation of fungal and bread waste",
+                "nan"
+            ]
+        },
+        "incubation_condition": {
+            "filename": "encoder_incubation_condition.pkl",
+            "filepath": "optimized_models_pickle\\encoders\\encoder_incubation_condition.pkl",
+            "file_size_kb": 0.33,
+            "classes": [
+                "Dark",
+                "Dark ",
+                "Dark, high CO2",
+                "Dark, low CO 2 ",
+                "Light, high CO2",
+                "Light, low CO2",
+                "nan"
+            ]
+        },
+        "growth_condition": {
+            "filename": "encoder_growth_condition.pkl",
+            "filepath": "optimized_models_pickle\\encoders\\encoder_growth_condition.pkl",
+            "file_size_kb": 0.25,
+            "classes": [
+                "Static "
+            ]
+        },
+        "reinforcement": {
+            "filename": "encoder_reinforcement.pkl",
+            "filepath": "optimized_models_pickle\\encoders\\encoder_reinforcement.pkl",
+            "file_size_kb": 0.31,
+            "classes": [
+                "Hessian jute fabric",
+                "No reinforcement",
+                "None ",
+                "felt",
+                "nan",
+                "wooven fabric"
+            ]
+        },
+        "crosslinking": {
+            "filename": "encoder_crosslinking.pkl",
+            "filepath": "optimized_models_pickle\\encoders\\encoder_crosslinking.pkl",
+            "file_size_kb": 0.52,
+            "classes": [
+                " zinc ",
+                "0.1% glutaraldehyde",
+                "0.1% mimosa",
+                "0.1% tara",
+                "20% Privet",
+                "5% N-(3-dimethylamino-\npropyl)-N\u2032-ethylcarbodiimide (EDC) ",
+                "Chestnut",
+                "Control ",
+                "Heat press (120 degrees)",
+                "Heat press at 120 degrees",
+                "Heat press at 60 degrees",
+                "Not crosslinked",
+                "PHA biopolymer ",
+                "chromium",
+                "nan"
+            ]
+        },
+        "plasticizing": {
+            "filename": "encoder_plasticizing.pkl",
+            "filepath": "optimized_models_pickle\\encoders\\encoder_plasticizing.pkl",
+            "file_size_kb": 0.79,
+            "classes": [
+                "1% glycerol",
+                "15% ethylene glycol",
+                "15% ethylene glycol + 20% corn zein",
+                "15% ethylene glycol + 5% tannic acid ",
+                "15% ethylene glycol overlayed with cheesecloth ",
+                "15% glycerol",
+                "15% glycerol + 5% tannic acid ",
+                "15% glycerol overlayed with cheesecloth ",
+                "16% glycerol",
+                "2% glycerol",
+                "20% glycerol",
+                "20% glycerol + Biobased binder",
+                "20% polyethylene glycol",
+                "20% polyethylene glycol overlayed with cheesecloth ",
+                "32% glycerol",
+                "4% glycerol",
+                "6% glycerol",
+                "8% glycerol",
+                "Not plasticized ",
+                "acetylation corn zein ",
+                "benzoylation corn zein ",
+                "nan",
+                "silane corn zein"
+            ]
+        }
+    }
+}
