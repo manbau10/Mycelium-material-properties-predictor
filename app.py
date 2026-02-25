@@ -1,8 +1,19 @@
+# app.py
+# Single-file Streamlit app with two pages:
+# - About the app
+# - Optimized models with synthetic data
+#
+# Final models used by the prediction page:
+#   Tensile Strength:  lightgbm_tensile_strength_bootstrap_sampling.pkl
+#   Elongation @ Break: xgboost_elongation_at_break_gaussian_noise.pkl
+#   Young's Modulus:   xgboost_young_modulus_gaussian_noise.pkl
+#
+# Encoders expected under encoders/encoder_<feature>.pkl
+# Optional models_metadata.json can define feature_columns order.
 
 import streamlit as st
 import pickle
 import pandas as pd
-import numpy as np
 import json
 import os
 from sklearn.preprocessing import LabelEncoder
@@ -15,6 +26,24 @@ try:
     _HAS_LGBM = True
 except Exception:
     _HAS_LGBM = False
+
+# ---------------------------- SIMPLE LABEL ENCODER ----------------------------
+# Pure-Python drop-in for sklearn LabelEncoder.
+# MUST be defined here so pickle.load() can find the class when loading
+# encoder_<feature>.pkl files (which were created using this same class).
+# This avoids any numpy version compatibility issues entirely.
+class SimpleLabelEncoder:
+    """Drop-in replacement for sklearn LabelEncoder using only Python built-ins.
+    Compatible with any numpy/sklearn version because it never touches numpy."""
+    def __init__(self, classes):
+        self.classes_ = sorted([str(c) for c in classes])
+        self._lookup = {c: i for i, c in enumerate(self.classes_)}
+
+    def transform(self, values):
+        return [self._lookup[v] for v in values]
+
+    def inverse_transform(self, codes):
+        return [self.classes_[i] for i in codes]
 
 # ---------------------------- PAGE CONFIGURATION ----------------------------
 st.set_page_config(
@@ -32,10 +61,11 @@ st.markdown("""
     .note { background: #FFF7E6; border-left: 4px solid #F59E0B; padding: 0.8rem 1rem; border-radius: 4px; margin: 0.6rem 0 1rem 0; color: #5A3B00; }
     .good { background: #ECFDF5; border-left: 4px solid #10B981; padding: 0.8rem 1rem; border-radius: 4px; margin: 0.6rem 0 1rem 0; color: #065F46; }
     .danger { background: #FEF2F2; border-left: 4px solid #EF4444; padding: 0.8rem 1rem; border-radius: 4px; margin: 0.6rem 0 1rem 0; color: #7F1D1D; }
+    .img-caption { text-align:center; font-size:0.9rem; color:#374151; margin-top:0.4rem; }
 </style>
 """, unsafe_allow_html=True)
 
-# ---------------------------- UTILITIES SHARED ACROSS PAGES ----------------------------
+# ---------------------------- UTILITIES ----------------------------
 def get_feature_options_from_encoders(encoders):
     options = {}
     for name, encoder in encoders.items():
@@ -182,7 +212,7 @@ def sidebar_inputs(encoders):
         'incubation_temperature': incubation_temperature
     }
 
-# ---------------------------- DATA/ENCODER LOADING HELPERS ----------------------------
+# ---------------------------- LOADERS ----------------------------
 @st.cache_data
 def load_encoders_and_metadata():
     encoders, metadata = {}, {}
@@ -201,23 +231,7 @@ def load_encoders_and_metadata():
     return encoders, metadata
 
 @st.cache_data
-def load_models_baseline():
-    models = {}
-    try:
-        with open('Models/xgboost_tensile_strength.pkl', 'rb') as f:
-            models['tensile_strength'] = pickle.load(f)
-        with open('Models/random_forest_elongation_at_break.pkl', 'rb') as f:
-            models['elongation_at_break'] = pickle.load(f)
-        with open('Models/xgboost_young_modulus.pkl', 'rb') as f:
-            models['young_modulus'] = pickle.load(f)
-        return models
-    except Exception as e:
-        st.error(f"Error loading optimized models: {e}")
-        return None
-
-@st.cache_data
 def load_models_augmented():
-    # Ensure LightGBM is available for unpickling LightGBM models
     if not _HAS_LGBM:
         st.error("LightGBM is required for the augmented models. Please install it with: pip install lightgbm")
         return None
@@ -237,94 +251,91 @@ def load_models_augmented():
 # ---------------------------- PAGES ----------------------------
 def page_about():
     st.markdown('<h1 class="main-header">🍄 Mycelium Material Properties Predictor</h1>', unsafe_allow_html=True)
-    st.write("A practical tool to estimate mechanical properties of mycelium-based materials from process parameters.")
+    st.write("Estimate mechanical properties of mycelium-based materials from process parameters using robust, validated machine learning models.")
 
-    st.markdown('<div class="sub-header">What this app does</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sub-header">Overview</div>', unsafe_allow_html=True)
     st.markdown("""
-- Predicts three key properties:
+- Targets predicted:
   - Tensile Strength (MPa)
   - Elongation at Break (%)
-  - Young’s Modulus (MPa)
-- Uses trained machine learning models to map process and material inputs to expected properties.
-- Supports two model sets:
-  - Optimized models (baseline improved using Optuna)
-  - Optimized models with synthetic data (trained with bootstrap sampling and Gaussian noise)
+  - Young's Modulus (MPa)
+- Model selection process:
+  - We evaluated five model families for each target: ANN, LightGBM, Random Forest, XGBoost, and CatBoost.
+  - We also evaluated three data augmentation strategies suitable for regression: SMOTE for regression, Bootstrap Sampling, and Gaussian Noise.
+  - For each target, we selected the best-performing combination (model + augmentation) based on validation metrics and generalization behavior.
+- The app uses the final selected models trained with the best augmentation per target.
 """)
 
-    st.markdown('<div class="sub-header">Inputs the models expect</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sub-header">Final models used in this app</div>', unsafe_allow_html=True)
     st.markdown("""
-- Fungi type
-- Substrate
-- Inoculation state
-- Incubation condition
-- Growth condition
-- Reinforcement
-- Crosslinking
-- Plasticizing
-- Incubation temperature (°C)
-""")
-    st.caption("Categorical values are encoded consistently via saved LabelEncoders; temperature is numeric.")
-
-    st.markdown('<div class="sub-header">Model families and training strategies</div>', unsafe_allow_html=True)
-    st.markdown("""
-- Optimized models:
-  - XGBoost for Tensile Strength
-  - Random Forest for Elongation at Break
-  - XGBoost for Young’s Modulus
-- Optimized models with synthetic data:
-  - LightGBM (Tensile) with Bootstrap Sampling
-  - XGBoost (Elongation at Break) with Gaussian Noise
-  - XGBoost (Young’s Modulus) with Gaussian Noise
+- Tensile Strength: LightGBM with Bootstrap Sampling
+- Elongation at Break: XGBoost with Gaussian Noise
+- Young's Modulus: XGBoost with Gaussian Noise
 """)
 
-    st.markdown('<div class="good">Why these choices?</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sub-header">Why augmentation?</div>', unsafe_allow_html=True)
     st.markdown("""
-- Gradient-boosted trees (XGBoost/LightGBM) capture nonlinear relations and handle mixed features.
-- Bootstrap sampling and Gaussian noise augmentation reduce overfitting and improve robustness, especially for small datasets.
+- Mycelium datasets are often small and heterogeneous.
+- Augmentation helps reduce overfitting and better reflect measurement/process variability:
+  - SMOTE for regression: synthesizes new samples in feature space.
+  - Bootstrap sampling: resamples with replacement to simulate multiple draws from the data distribution.
+  - Gaussian noise: perturbs inputs or targets slightly to promote robustness.
 """)
+
+    st.markdown('<div class="sub-header">Validation snapshots (all models, train vs. test)</div>', unsafe_allow_html=True)
+    st.caption("These figures illustrate how different model families performed under the most suitable augmentation strategy for each target. The final choices for this app are those with the most consistent generalization on the test splits.")
+    col1 = st.container()
+    with col1:
+        st.image("images/ts_bootstrap_all_models.png", use_column_width=True, caption="Bootstrap Sampling – Tensile Strength: All evaluated models (train/test).")
+        st.markdown('<div class="img-caption">We selected LightGBM + Bootstrap for Tensile Strength.</div>', unsafe_allow_html=True)
+
+    col2 = st.container()
+    with col2:
+        st.image("images/eab_gaussian_all_models.png", use_column_width=True, caption="Gaussian Noise – Elongation at Break: All evaluated models (train/test).")
+        st.markdown('<div class="img-caption">We selected XGBoost + Gaussian Noise for Elongation at Break.</div>', unsafe_allow_html=True)
+
+    col3 = st.container()
+    with col3:
+        st.image("images/ym_gaussian_all_models.png", use_column_width=True, caption="Gaussian Noise – Young's Modulus: All evaluated models (train/test).")
+        st.markdown('<div class="img-caption">We selected XGBoost + Gaussian Noise for Young\u2019s Modulus.</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="sub-header">How to use</div>', unsafe_allow_html=True)
     st.markdown("""
-1) Use the sidebar to navigate to "Optimized models" or "Optimized models with synthetic data".
+1) Go to "Optimized models with synthetic data" using the sidebar.
 2) Select your process parameters in the sidebar.
-3) Click “Predict Properties”.
+3) Click "Predict Properties".
 4) Review the metrics and gauges. Iterate on inputs to explore sensitivity.
 """)
 
     st.markdown('<div class="note">Interpreting predictions</div>', unsafe_allow_html=True)
     st.markdown("""
-- Predictions are point estimates; experimental variability may differ.
-- Use results to prioritize experiments, not to replace them.
+- Predictions are point estimates; treat them as guidance for experiment planning.
+- Consider experimental uncertainty and domain knowledge when acting on results.
 """)
 
     st.markdown('<div class="danger">Limitations</div>', unsafe_allow_html=True)
     st.markdown("""
-- Limited reliability outside the training distribution.
-- Unseen categorical values are mapped to a default code (0)
-- Synthetic augmentation improves robustness but cannot model all real-world effects.
+- Reliability decreases outside the training distribution.
+- Unseen categorical values are mapped to a default code; updating encoders and retraining is recommended when adding new categories.
 """)
 
-
-def page_predict(models_loader, title):
+def page_predict():
+    title = "Optimized models with synthetic data"
     st.markdown(f'<h1 class="main-header">🍄 {title}</h1>', unsafe_allow_html=True)
 
-    # Load encoders and metadata (shared)
     encoders, metadata = load_encoders_and_metadata()
     feature_order = infer_feature_order(metadata)
 
-    # LightGBM hint for augmented page if missing
-    if (title.lower().startswith("optimized models with synthetic data")) and not _HAS_LGBM:
+    if not _HAS_LGBM:
         st.warning("This page requires LightGBM. Install it with: pip install lightgbm")
-    # Load selected model set
-    models = models_loader()
+
+    models = load_models_augmented()
     if models is None:
         st.stop()
     st.success("✅ Models loaded successfully.")
 
-    # Sidebar inputs
     input_data = sidebar_inputs(encoders)
 
-    # Predict
     if st.button("🚀 Predict Properties", use_container_width=True):
         df = prepare_input_data(input_data, encoders, feature_order, report_unseen=True)
         if df is not None:
@@ -349,14 +360,12 @@ def page_predict(models_loader, title):
 st.sidebar.title("Navigation")
 page = st.sidebar.radio(
     "Go to",
-    options=["About the app", "Optimized models", "Optimized models with synthetic data"],
+    options=["About the app", "Optimized models with synthetic data"],
     index=0
 )
 
 # ---------------------------- ROUTER ----------------------------
 if page == "About the app":
     page_about()
-elif page == "Optimized models":
-    page_predict(load_models_baseline, "Optimized models")
 elif page == "Optimized models with synthetic data":
-    page_predict(load_models_augmented, "Optimized models with synthetic data")
+    page_predict()
